@@ -32,11 +32,15 @@ function onOpenModal(e) {
 
   const url = image.dataset.source;
 
-  const instance = basicLightbox.create(`<img src="${url}" width="800" height="600">`);
+  const instance = basicLightbox.create(`<img src="${url}" width="800" height="600">`, {
+    onClose: instance => {
+      document.body.removeEventListener('keydown', onCloseEsc);
+    },
+  });
 
   instance.show();
 
-  window.addEventListener('keydown', onCloseEsc);
+  document.body.addEventListener('keydown', onCloseEsc);
 
   function onCloseEsc(e) {
     if (e.code !== 'Escape') {
@@ -44,7 +48,6 @@ function onOpenModal(e) {
     }
 
     instance.close();
-    window.removeEventListener('keydown', onCloseEsc);
   }
 }
 
